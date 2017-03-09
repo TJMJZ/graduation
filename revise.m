@@ -4,11 +4,11 @@ clc
 global dataFolder exeFolder codeFolder
 codeFolder = 'H:\graduation';
 exeFolder = 'E:\biye\FLAC700_002\Exe32';
-dataFolder = 'H:\graduation\data';
+dataFolder = 'H:\data';
 KSATCVT = 1.03e-3;
 meanPara = [8000 38 0.2863 4641 2.00E-05*KSATCVT];
 
-load data_flac_nopile.mat
+load data_krig.mat
 
 
 for global_loop_i = 1:(size(data_flac_nopile,1))

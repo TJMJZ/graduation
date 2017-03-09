@@ -140,5 +140,5 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
 
 end
 
-
+save data_krig.mat data_flac_nopile
 
