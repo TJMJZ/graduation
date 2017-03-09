@@ -2,9 +2,9 @@ clear
 clc
 
 global dataFolder exeFolder codeFolder
-codeFolder = 'D:\毕业\0207\graduate';
-exeFolder = 'D:\flacfolder\FLAC700\Exe32';
-dataFolder = 'D:\毕业\0207\graduate\data';
+codeFolder = 'H:\graduation';
+exeFolder = 'E:\biye\FLAC700_002\Exe32';
+dataFolder = 'H:\graduation\data';
 KSATCVT = 1.03e-3;
 meanPara = [8000 38 0.2863 4641 2.00E-05*KSATCVT];
 
