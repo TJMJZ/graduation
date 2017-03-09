@@ -1,9 +1,9 @@
-clear 
+%clear 
 clc
-load('data_flac_nopile.mat');
+%load('data_flac_nopile.mat');
 
 
-for global_loop_i = 1:(size(data_flac_nopile,1))
+for global_loop_i = 2:(size(data_flac_nopile,1))
   
 
   initialize_env
@@ -14,7 +14,7 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
   valikrig_percent = 0.1;
   calkrig_percent = 1- valikrig_percent;
   fpRange = 0.85;
-  N = 50000;
+  N = 200000;
 
   FAILNUM = 3000;
   FAILNUMLIMIT = 4000;
@@ -82,7 +82,7 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
     end
   end
 
-  [valikrig_rst,valikrig]=ValiKrigModel(kM000100,ival,oval,0);
+  [valikrig_rst,valikrig]=valiKrigModel(kM000100,ival,oval,0);
   if valikrig ~= max_vali
     disp('krig model error');
   end
