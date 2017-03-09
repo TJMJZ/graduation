@@ -13,11 +13,11 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
   calkrig_limit = 1500;
   valikrig_percent = 0.1;
   calkrig_percent = 1- valikrig_percent;
-  fpRange = 0.85;
+  fpRange = 0.9;
   N = 500000;
 
-  FAILNUM = 6000;
-  FAILNUMLIMIT = 6500;
+  FAILNUM = 10000;
+
   % program interface
 
   xlower = min(xmin,xmax);
@@ -50,7 +50,7 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
   ioall = [iocal;ioval];
   [m,n] = size(iall);
 
-  kM000100 = data_flac_nopile{i,5}.krigmodel
+  kM000100 = data_flac_nopile{global_loop_i,5}.krigmodel;
 
   temp = 0;
   fP100Set_all = [];
@@ -90,16 +90,11 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
   result.xrepbeta = beta100Set1;
   result.xrepcorr = cor100Set1;
   result.fpbound = B100;
-  result.krigmodel = kM000100;
-  result.krigvali = max_vali;
-  result.krigvalirst = valikrig_rst;
-  result.samplesc = iocal;
-  result.samplesv = ioval;
   result.failpoints = fP100Set_all;
   result.paracos = cosdp_thresh;
   result.parafprange = fpRange;
 
-  data_flac_nopile{global_loop_i,5} = result;
+  data_flac_nopile{global_loop_i,6} = result;
   clearvars -except data_flac_nopile
 
 end
