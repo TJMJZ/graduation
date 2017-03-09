@@ -1,37 +1,52 @@
-  global dataFolder exeFolder codeFolder
+clear 
+clc
 
-
+global dataFolder exeFolder codeFolder
 codeFolder = 'D:\毕业\0207\graduate';
 exeFolder = 'D:\flacfolder\FLAC700\Exe32';
 dataFolder = 'D:\毕业\0207\graduate\data';
+KSATCVT = 1.03e-3;
+meanPara = [8000 38 0.2863 4641 2.00E-05*KSATCVT];
 
-rainfall_amt_cvt=1;
-rainfall_hour=2;
-ini_suction_kpa=5;
+load data_flac_nopile.mat
 
-meanPara = xmean;
-tobeCalibrated =[];
 
-[gmean,rstmean] = callflac_fos(meanPara,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
-rstbackup = [];
+for global_loop_i = 1:(size(data_flac_nopile,1))
 
-for i = 1 : (size(tobeCalibrated,1))
-	rstlist = rstmean;
-	currpoint = tobeCalibrated(i,:);
-	[gcurr,rstcurr] = callflac_fos(currpoint,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
-	g = 1;
-	rstlist = [rstlist;rstcurr];
+	tobeCalibrated =data_flac_nopile{i,5}.xrep;
+	rainfall_amt_cvt=data_flac_nopile{i,4}{1}*(1e-4)
+	rainfall_hour=data_flac_nopile{i,4}{2}
+	ini_suction_kpa=data_flac_nopile{i,4}{3}/1000
 
-	while (abs(g)>=0.02)
+	[gmean,rstmean] = callflac_fos(meanPara,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
+	rstbackup = [];
+	for i = 1 : (size(tobeCalibrated,1))
+		rstlist = rstmean;
+		currpoint = tobeCalibrated(i,:);
+		[gcurr,rstcurr] = callflac_fos(currpoint,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
+		g = 1;
+		rstlist = [rstlist;rstcurr];
 
-		[m,n] = size(rstlist);
+		while (abs(g)>=0.02)
 
-		calibrating = rstlist(m,2:(n-1))-(rstlist(m,n)-1)*(rstlist(m,2:(n-1))-rstlist((m-1),2:(n-1)))/(rstlist(m,n)-rstlist(m-1,n));
-		
-		[gcali,rstcali] = callflac_fos(calibrating,FosCalibration);
+			[m,n] = size(rstlist);
 
-		rstlist = [rstlist;rstcali];
+			calibrating = rstlist(m,2:(n-1))-(rstlist(m,n)-1)*(rstlist(m,2:(n-1))-rstlist((m-1),2:(n-1)))/(rstlist(m,n)-rstlist(m-1,n));
+			
+			[gcali,rstcali] = callflac_fos(calibrating,FosCalibration);
+
+			rstlist = [rstlist;rstcali];
+		end
+		rstbackup = [rstbackup;rstlist];
 	end
-	rstbackup = [rstbackup;rstlist];
+	
+	data_flac_nopile{i,6} = rstbackup;
 
 end
+
+
+
+
+
+
+

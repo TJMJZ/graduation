@@ -1,8 +1,9 @@
-clear clc
+clear 
+clc
 load('data_flac_nopile.mat');
 
 
-for global_loop_i = 1:(size(testdfs,1))
+for global_loop_i = 1:(size(data_flac_nopile,1))
   
 
   initialize_env
@@ -134,7 +135,7 @@ for global_loop_i = 1:(size(testdfs,1))
   result.paracos = cosdp_thresh;
   result.parafprange = fpRange;
 
-  data_flac_nopile{global_loop_i,4} = result;
+  data_flac_nopile{global_loop_i,5} = result;
   clearvars -except data_flac_nopile
 
 end
