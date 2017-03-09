@@ -10,14 +10,10 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
 
   % program interface
   cosdp_thresh = 0.5;
-  calkrig_limit = 1500;
-  valikrig_percent = 0.1;
-  calkrig_percent = 1- valikrig_percent;
-  fpRange = 0.85;
-  N = 500000;
 
-  FAILNUM = 6000;
-  FAILNUMLIMIT = 6500;
+
+  FAILNUM = 10000;
+
   % program interface
   fP100Set_all = data_flac_nopile{global_loop_i,6}.failpoints;
 
@@ -25,7 +21,6 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
     cosdp_thresh = 0.5+0.05*j;
     [xrep100Set1,beta100Set1,cor100Set1] = findMajorModes(fP100Set_all(1:FAILNUM,:),cosdp_thresh);
     B100(1,:) = calPfFun(xrep100Set1);
-    result.calpara = flaccal_envpara;
     result.xrep = xrep100Set1;
     result.xrepbeta = beta100Set1;
     result.xrepcorr = cor100Set1;
