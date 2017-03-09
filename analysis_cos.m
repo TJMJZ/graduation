@@ -1,6 +1,6 @@
 clear 
 clc
-load('data_krig.mat');
+load('data_krig_fuck.mat');
 
 
 for global_loop_i = 1:(size(data_flac_nopile,1))
@@ -21,18 +21,20 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
   % program interface
   fP100Set_all = data_flac_nopile{global_loop_i,6}.failpoints;
 
-  [xrep100Set1,beta100Set1,cor100Set1] = findMajorModes(fP100Set_all(1:FAILNUM,:),cosdp_thresh);
-  B100(1,:) = calPfFun(xrep100Set1)
+  for j = 1:5
+    cosdp_thresh = 0.5+0.05*j;
+    [xrep100Set1,beta100Set1,cor100Set1] = findMajorModes(fP100Set_all(1:FAILNUM,:),cosdp_thresh);
+    B100(1,:) = calPfFun(xrep100Set1);
+    result.calpara = flaccal_envpara;
+    result.xrep = xrep100Set1;
+    result.xrepbeta = beta100Set1;
+    result.xrepcorr = cor100Set1;
+    result.fpbound = B100;
+    result.paracos = cosdp_thresh;
 
-  result.calpara = flaccal_envpara;
-  result.xrep = xrep100Set1;
-  result.xrepbeta = beta100Set1;
-  result.xrepcorr = cor100Set1;
-  result.fpbound = B100;
-  result.paracos = cosdp_thresh;
+    data_flac_nopile{global_loop_i,(6+j)} = result;
 
-  data_flac_nopile{global_loop_i,7} = result;
-  clearvars -except data_flac_nopile
+  end
 
 end
 
