@@ -47,4 +47,5 @@ Temporary Items
 .apdisk
 
 # Data file
-*.dat
+*.asv
+*.mat

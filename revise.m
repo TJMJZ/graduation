@@ -1,12 +1,12 @@
 clear 
 clc
 
-global dataFolder exeFolder codeFolder
+initialize_env;
 codeFolder = 'H:\graduation';
 exeFolder = 'E:\biye\FLAC700_002\Exe32';
 dataFolder = 'H:\data';
-KSATCVT = 1.03e-3;
-meanPara = [8000 38 0.2863 4641 2.00E-05*KSATCVT];
+
+meanPara =xmean;
 
 load data_krig_cos.mat
 
@@ -24,16 +24,18 @@ for global_loop_i = 1:(size(data_flac_nopile,1))
 		rstlist = rstmean;
 		currpoint = tobeCalibrated(i,:);
 		[gcurr,rstcurr] = callflac_fos(currpoint,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
-		g = 1;
+		gcali = 1;
 		rstlist = [rstlist;rstcurr];
 
-		while (abs(g)>=0.02)
+		while (abs(gcali)>0.01)
 
 			[m,n] = size(rstlist);
-
-			calibrating = rstlist(m,2:(n-1))-(rstlist(m,n)-1)*(rstlist(m,2:(n-1))-rstlist((m-1),2:(n-1)))/(rstlist(m,n)-rstlist(m-1,n));
-			
-			[gcali,rstcali] = callflac_fos(calibrating,0);
+            if rstlist(m,n)==rstlist(m-1,n)
+                break
+            end
+			calibratingy = gety(rstlist(m,2:(n-1)))-(rstlist(m,n)-1)*(gety(rstlist(m,2:(n-1)))-gety(rstlist((m-1),2:(n-1))))/(rstlist(m,n)-rstlist(m-1,n));
+			calibrating = getx(calibratingy);
+			[gcali,rstcali] = callflac_fos(calibrating,rainfall_amt_cvt,rainfall_hour,ini_suction_kpa);
 
 			rstlist = [rstlist;rstcali];
 		end
